@@ -79,13 +79,13 @@ void populateMap() {
             for (int t = 0; t < (int)(perlin::perlin2d(xx, yy, 0.1, 1)*10); t++) {
                 if (t > maximum_height) maximum_height = t;
                 blocks.push_back(Cube {
-                    position: P3(xx, t, yy),
-                    type: t < 1 ? CubeType::Stone : CubeType::Dirt
+                    .position= P3(xx, t, yy),
+                    .type= t < 1 ? CubeType::Stone : CubeType::Dirt
                 });
             }
             blocks.push_back(Cube {
-                position: P3(xx, (int)(maximum_height + CUBE), yy),
-                type: CubeType::Grass
+                .position= P3(xx, (int)(maximum_height + CUBE), yy),
+                .type= CubeType::Grass
             });
         }
     }
@@ -113,19 +113,19 @@ int main()
     SetTraceLogLevel(TraceLogLevel::LOG_WARNING);
     InitWindow(scrWidth, scrHeight, "Game");
 
-    Image img0 = LoadImage("./res/dirt_block.png");
-    Image img1 = LoadImage("./res/stone_block.png");
-    Image img3 = LoadImage("./res/grass_block.png");
+    Image img0 = LoadImage("./resource/dirt_block.png");
+    Image img1 = LoadImage("./resource/stone_block.png");
+    Image img3 = LoadImage("./resource/grass_block.png");
 
     Texture DirtCubeTexture = LoadTextureFromImage(img0);
     Texture StoneCubeTexture = LoadTextureFromImage(img1);
 
-    Image i_front = ImageFromImage(img3, Rectangle { x: 0,y: 0, width: 16, height: 16 });
-    Image i_back = ImageFromImage(img3, Rectangle { x: 16,y: 0, width: 16, height: 16 });
-    Image i_top = ImageFromImage(img3, Rectangle { x: 32,y: 0, width: 16, height: 16 });
-    Image i_bottom = ImageFromImage(img3, Rectangle { x: 48,y: 0, width: 16, height: 16 });
-    Image i_right = ImageFromImage(img3, Rectangle { x: 64,y: 0, width: 16, height: 16 });
-    Image i_left = ImageFromImage(img3, Rectangle { x: 80,y: 0, width: 16, height: 16 });
+    Image i_front = ImageFromImage(img3, Rectangle { .x= 0,.y= 0, .width= 16, .height= 16 });
+    Image i_back = ImageFromImage(img3, Rectangle { .x= 16,.y= 0, .width= 16, .height= 16 });
+    Image i_top = ImageFromImage(img3, Rectangle { .x= 32,.y= 0, .width= 16, .height= 16 });
+    Image i_bottom = ImageFromImage(img3, Rectangle { .x= 48,.y= 0, .width= 16, .height= 16 });
+    Image i_right = ImageFromImage(img3, Rectangle { .x= 64,.y= 0, .width= 16, .height= 16 });
+    Image i_left = ImageFromImage(img3, Rectangle { .x= 80,.y= 0, .width= 16, .height= 16 });
 
     Texture t_front = LoadTextureFromImage(i_front);
     Texture t_back = LoadTextureFromImage(i_back);
@@ -148,11 +148,11 @@ int main()
 
     Jump jm;
     Camera3D C = {
-        position : P3(MAP_SIZE / 2.0f, CAM_HEIGHT, MAP_SIZE / 2.0f),
-        target : P3(0, 0, 0),
-        up : P3(0.f, CAM_HEIGHT, 0.f),
-        fovy : 60.0f,
-        projection : CameraProjection::CAMERA_PERSPECTIVE
+        .position= P3(MAP_SIZE / 2.0f, CAM_HEIGHT, MAP_SIZE / 2.0f),
+        .target= P3(0, 0, 0),
+        .up= P3(0.f, CAM_HEIGHT, 0.f),
+        .fovy= 60.0f,
+        .projection= CameraProjection::CAMERA_PERSPECTIVE
     };
 
     EnableFirstPerson(C);
@@ -210,7 +210,7 @@ int main()
             BeginMode3D(C);
             {                
                 mray = GetMouseRay(P2(scrWidth /2, scrHeight /2), C);
-                RayCollision col = RayCollision { hit: false };
+                RayCollision col = RayCollision { .hit= false };
                 bool q = true;
                 drawn_blocks = 0;
                 int index = 0;
@@ -227,8 +227,8 @@ int main()
                     // dist > CAM_HEIGHT
                     if (q && dist < 6*CUBE) {
                         col = GetRayCollisionBox(mray, BoundingBox {
-                            min: P3(cb.position.x - cb.scales.x/2, cb.position.y - cb.scales.y/2, cb.position.z - cb.scales.z/2 ),
-                            max: P3(cb.position.x + cb.scales.x/2, cb.position.y + cb.scales.y/2, cb.position.z + cb.scales.z/2 )
+                            .min= P3(cb.position.x - cb.scales.x/2, cb.position.y - cb.scales.y/2, cb.position.z - cb.scales.z/2 ),
+                            .max= P3(cb.position.x + cb.scales.x/2, cb.position.y + cb.scales.y/2, cb.position.z + cb.scales.z/2 )
                         });
                         if (
                             col.hit &&
@@ -249,7 +249,7 @@ int main()
                         }
                         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
                             blocks.push_back(Cube {
-                                position: P3(cb.position.x, cb.position.y + CUBE, cb.position.z)
+                                .position= P3(cb.position.x, cb.position.y + CUBE, cb.position.z)
                             });
                         }
                     }
@@ -268,7 +268,7 @@ int main()
             }
             EndMode3D();
 
-            DrawText(TextFormat("P{x: %.2f, y: %.2f, z: %.2f}\nT{x: %.2f, y: %.2f, z: %.2f}\nSpeed: %.1f\nBlocks: %i of %i\nDistance: %i", C.position.x, C.position.y, C.position.z, C.target.x, C.target.y, C.target.z, speed, drawn_blocks, blocks.size(), draw_distance), 20, 20, 8, GRAY);
+            DrawText(TextFormat("P{.x= %.2f, .y= %.2f, z: %.2f}\nT{.x= %.2f, .y= %.2f, z: %.2f}\nSpeed: %.1f\nBlocks: %i of %i\nDistance: %i", C.position.x, C.position.y, C.position.z, C.target.x, C.target.y, C.target.z, speed, drawn_blocks, blocks.size(), draw_distance), 20, 20, 8, GRAY);
             DrawText(TextFormat("%i fps", GetFPS()), (scrWidth / 2) - 20, 10, 10, BLACK);
 
             DrawCircle(scrWidth / 2, scrHeight / 2, pointer_dm, ColorAlpha(BLACK, 0.3));
@@ -286,7 +286,7 @@ int main()
     return 0;
 }
 
-Vector3 P3(float x, float y, float z) { return Vector3{x : x, y : y, z : z}; }
-Vector2 P2(float x, float y) { return Vector2{x : x, y : y}; };
+Vector3 P3(float x, float y, float z) { return Vector3{.x= x, .y= y, .z= z}; }
+Vector2 P2(float x, float y) { return Vector2{.x= x, .y= y}; };
 Vector3 P3(int x, int y, int z) { return P3((float)x, (float)y, (float)z); }
 Vector2 P2(int x, int y) { return P2((float)x, (float)y); }
