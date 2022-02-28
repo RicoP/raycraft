@@ -4,7 +4,7 @@ There is no physics engine or anything special.
 just a map generation and simple blockwork :)
 
 # Build
-download a release of raylib (4.0.0) to `./raylib/`.
+download a release of raylib (use: [4.0.0](https://github.com/raysan5/raylib/releases/tag/4.0.0)) to `./raylib/`.
 then run:
 ```
 ./build.sh
